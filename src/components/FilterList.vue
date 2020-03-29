@@ -53,6 +53,8 @@ export default {
       this.$store.dispatch("GET_DATA").then((people) => {
         this.filteredPeople = [...people];
       });
+    } else {
+        this.filteredPeople = [...this.PEOPLE];
     }
   },
   methods: {

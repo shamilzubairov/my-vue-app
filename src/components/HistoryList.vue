@@ -22,8 +22,6 @@
 <script>
 import { mapGetters } from "vuex";
 
-
-
 export default {
   props: {
     param: {
@@ -32,10 +30,6 @@ export default {
   },
   computed: {
     ...mapGetters(["HISTORY_LIST"]),
-  },
-  created() {
-    console.log(this.param) // undefined
-    console.log(this.HISTORY_LIST)
   },
 };
 </script>
