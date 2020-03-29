@@ -93,13 +93,12 @@ export default {
         })
       );
       this.filteredPeople = [...this.PEOPLE];
-      this.SET_CHOOSEN_PEOPLE(this.choosenPeople);
       this.searcher();
-      // set history
+      this.SET_CHOOSEN_PEOPLE(this.choosenPeople);
     },
     removeNote: function (e) {
       const searchedId = e.target.parentNode.id;
-      this.choosenPeople = this.choosenPeople.filter((fp) => {
+      this.choosenPeople = [...this.choosenPeople.filter((fp) => {
         if (fp.name != searchedId) return fp;
         else {
           this.ADD_NEW_ITEM(fp);
@@ -110,9 +109,8 @@ export default {
             date: new Date(),
           });
         }
-      });
+      })];
       this.SET_CHOOSEN_PEOPLE(this.choosenPeople);
-      // set history
     },
     setPageInTop: function () {
       window.scrollTo(0, 0);
@@ -122,7 +120,7 @@ export default {
 
 addEventListener("scroll", function () {
   const button = document.getElementsByClassName("up")[0];
-  if (window.scrollY > 50) button.style.display = "block";
+  if (window.scrollY > 350) button.style.display = "block";
   else button.style.display = "none";
 });
 </script>
