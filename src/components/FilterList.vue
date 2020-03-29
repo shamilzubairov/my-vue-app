@@ -18,13 +18,13 @@
       <ul class="people" v-if="LOADED">
         <li v-for="(p, i) in filteredPeople" :id="p.name" :key="i">
           {{ JSON.stringify(p) }}
-          <button @click="moveIn">&rarr;</button>
+          <button @click="addNote">&rarr;</button>
         </li>
       </ul>
       <div v-else>Loading...</div>
       <ul class="choosenPeople">
         <li v-for="(fp, i) in choosenPeople" :id="fp.name" :key="i">
-          <button @click="moveOut">&larr;</button>
+          <button @click="removeNote">&larr;</button>
           {{ JSON.stringify(fp) }}
         </li>
       </ul>
@@ -56,7 +56,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["SET_PEOPLE", "ADD_NEW_ITEM"]),
+    ...mapMutations(["SET_PEOPLE", "ADD_NEW_ITEM", "SET_HISTORY_TYPE"]),
     searcher() {
       const searchedName = new RegExp(this.value, "ig");
       this.filteredPeople = [
@@ -67,26 +67,38 @@ export default {
         }),
       ];
     },
-    moveIn: function (e) {
+    addNote: function (e) {
       const searchedId = e.target.parentNode.id;
       this.SET_PEOPLE(
         this.PEOPLE.filter((p) => {
           if (p.name != searchedId) {
             return p;
-          } else this.choosenPeople.push(p);
+          } else {
+            this.choosenPeople.push(p);
+            this.SET_HISTORY_TYPE({
+              name: p.name,
+              type: 'ADD',
+              date: new Date
+            })
+          }
         })
       );
       this.filteredPeople = [...this.PEOPLE];
       this.searcher();
       // set history
     },
-    moveOut: function (e) {
+    removeNote: function (e) {
       const searchedId = e.target.parentNode.id;
       this.choosenPeople = this.choosenPeople.filter((fp) => {
         if (fp.name != searchedId) return fp;
         else {
           this.ADD_NEW_ITEM(fp);
           this.filteredPeople.push(fp);
+          this.SET_HISTORY_TYPE({
+            name: fp.name,
+            type: 'REMOVE',
+            date: new Date
+          })
         }
       });
       // set history

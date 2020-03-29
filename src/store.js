@@ -7,6 +7,7 @@ const Module = {
   state: {
     loaded: false,
     people: [],
+    historyList: [] // array of objects
   },
   getters: {
     LOADED: (state) => {
@@ -14,6 +15,9 @@ const Module = {
     },
     PEOPLE: (state) => {
       return state.people;
+    },
+    HISTORY_LIST: (state) => {
+      return state.historyList;
     },
   },
   mutations: {
@@ -26,6 +30,9 @@ const Module = {
     SET_LOADED(state, value) {
       state.loaded = value;
     },
+    SET_HISTORY_TYPE(state, payload) {
+      state.historyList.push(payload)
+    }
   },
   actions: {
     GET_DATA({ commit }) {
