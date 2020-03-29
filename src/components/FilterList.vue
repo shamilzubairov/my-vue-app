@@ -46,19 +46,26 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["LOADED", "PEOPLE"]),
+    ...mapGetters(["LOADED", "PEOPLE", "CHOOSEN_PEOPLE"]),
   },
   created() {
     if (!this.PEOPLE.length) {
       this.$store.dispatch("GET_DATA").then((people) => {
         this.filteredPeople = [...people];
       });
-    } else {
-        this.filteredPeople = [...this.PEOPLE];
     }
   },
+  mounted() {
+    this.filteredPeople = [...this.PEOPLE];
+    this.choosenPeople = [...this.CHOOSEN_PEOPLE];
+  },
   methods: {
-    ...mapMutations(["SET_PEOPLE", "ADD_NEW_ITEM", "SET_HISTORY_TYPE"]),
+    ...mapMutations([
+      "SET_PEOPLE",
+      "ADD_NEW_ITEM",
+      "SET_CHOOSEN_PEOPLE",
+      "SET_HISTORY_TYPE",
+    ]),
     searcher() {
       const searchedName = new RegExp(this.value, "ig");
       this.filteredPeople = [
@@ -79,13 +86,14 @@ export default {
             this.choosenPeople.push(p);
             this.SET_HISTORY_TYPE({
               name: p.name,
-              type: 'ADD',
-              date: new Date
-            })
+              type: "ADD",
+              date: new Date(),
+            });
           }
         })
       );
       this.filteredPeople = [...this.PEOPLE];
+      this.SET_CHOOSEN_PEOPLE(this.choosenPeople);
       this.searcher();
       // set history
     },
@@ -98,11 +106,12 @@ export default {
           this.filteredPeople.push(fp);
           this.SET_HISTORY_TYPE({
             name: fp.name,
-            type: 'REMOVE',
-            date: new Date
-          })
+            type: "REMOVE",
+            date: new Date(),
+          });
         }
       });
+      this.SET_CHOOSEN_PEOPLE(this.choosenPeople);
       // set history
     },
     setPageInTop: function () {

@@ -7,7 +7,8 @@ const Module = {
   state: {
     loaded: false,
     people: [],
-    historyList: [] // array of objects
+    choosenPeople: [],
+    historyList: [], // array of objects
   },
   getters: {
     LOADED: (state) => {
@@ -15,6 +16,9 @@ const Module = {
     },
     PEOPLE: (state) => {
       return state.people;
+    },
+    CHOOSEN_PEOPLE: (state) => {
+      return state.choosenPeople;
     },
     HISTORY_LIST: (state) => {
       return state.historyList;
@@ -24,6 +28,9 @@ const Module = {
     SET_PEOPLE(state, data) {
       state.people = [...data];
     },
+    SET_CHOOSEN_PEOPLE(state, data) {
+      state.choosenPeople = [...data];
+    },
     ADD_NEW_ITEM(state, item) {
       state.people = [...state.people, item];
     },
@@ -31,8 +38,8 @@ const Module = {
       state.loaded = value;
     },
     SET_HISTORY_TYPE(state, payload) {
-      state.historyList.push(payload)
-    }
+      state.historyList.push(payload);
+    },
   },
   actions: {
     GET_DATA({ commit }) {
