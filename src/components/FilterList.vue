@@ -68,12 +68,19 @@ export default {
     ]),
     searcher() {
       const searchedName = new RegExp(this.value, "ig");
+      let sortedArray = []
+      this.PEOPLE.forEach((person) => {
+        let count = person.name.match(searchedName)
+        if (count) {
+          sortedArray.push({count: count.length, person})
+        }
+      })
       this.filteredPeople = [
-        ...this.PEOPLE.filter((p) => {
-          if (p.name.match(searchedName)) {
-            return p;
-          }
-        }),
+        ...sortedArray
+          .sort((a, b) => a.count < b.count ? 1 : -1)
+          .map(p => {
+            return p.person
+          })
       ];
     },
     addNote: function (e) {
